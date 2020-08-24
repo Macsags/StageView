@@ -7,9 +7,9 @@ stageView/stepView 仿外卖配送进度，阶段进度，实时进度等等</br
 ****
 示例：
 -------
-![](https://github.com/Macsags/SuctionTop/blob/master/yulan.gif)
+![](https://github.com/Macsags/StageView/blob/master/stageview.png)
 
-[图片地址](https://github.com/Macsags/SuctionTop/blob/master/yulan.gif)
+[图片地址](https://github.com/Macsags/StageView/blob/master/stageview.png)
 </br>
 ****
 日志
