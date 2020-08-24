@@ -1,0 +1,3 @@
+include ':stageview'
+include ':app'
+rootProject.name = "StageView"
