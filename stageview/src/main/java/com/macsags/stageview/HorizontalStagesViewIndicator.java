@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
@@ -51,16 +52,9 @@ public class HorizontalStagesViewIndicator extends View {
     private Path mPath;
 
     private OnDrawIndicatorListener mOnDrawListener;
+    private OnDrawViewCallBack mOnDrawViewCallBack;
     private int screenWidth;//this screen width
 
-    /**
-     * 设置监听
-     *
-     * @param onDrawListener
-     */
-    public void setOnDrawListener(OnDrawIndicatorListener onDrawListener) {
-        mOnDrawListener = onDrawListener;
-    }
 
     /**
      * get圆的半径  get circle radius
@@ -298,5 +292,55 @@ public class HorizontalStagesViewIndicator extends View {
      */
     public interface OnDrawIndicatorListener {
         void onDrawIndicator();
+    }
+
+    public interface OnDrawViewCallBack {
+        void onViewCallBack(int index);
+    }
+
+    /**
+     * 设置监听
+     *
+     * @param onDrawListener
+     */
+    public void setOnDrawListener(OnDrawIndicatorListener onDrawListener) {
+        mOnDrawListener = onDrawListener;
+    }
+
+    /**
+     * 设置监听
+     *
+     * @param onDrawViewCallBack
+     */
+    public void setOnDrawViewCallBack(OnDrawViewCallBack onDrawViewCallBack) {
+        mOnDrawViewCallBack = onDrawViewCallBack;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                Log.e("~~~~~~", "onTouchEvent: 1111111");
+            case MotionEvent.ACTION_DOWN:
+                float x = event.getX()-20;
+                mOnDrawViewCallBack.onViewCallBack(searchInsert(mCircleCenterPointPositionList, x));
+                break;
+
+            case MotionEvent.ACTION_UP:
+                Log.e("~~~~~~", "onTouchEvent: 3333333333");
+                return true;
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public int searchInsert(List<Float> list, float target) {
+        int length = list.size();
+        if (target <= list.get(0))
+            return 0;
+        for (int i = 0; i < length; ++i) {
+            if (list.get(i) >= target)
+                return i;
+        }
+        return length;
     }
 }

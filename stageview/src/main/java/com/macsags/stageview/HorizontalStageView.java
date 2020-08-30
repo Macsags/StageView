@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,6 +175,12 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
                         mTextView.setTextColor(mComplectedTextColor);
                     } else {
                         mTextView.setTextColor(mUnComplectedTextColor);
+                        mTextView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
                     }
 
                     mTextContainer.addView(mTextView);
@@ -194,7 +199,7 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
                     // getMeasuredWidth
                     int measuredWidth = mImageView.getMeasuredWidth();
                     mImageView.setX(complectedXPosition.get(i) - mStepBeanList.get(i).getDrawableSize() / 2);
-                    mImageView.setLayoutParams(new ViewGroup.LayoutParams( mStepBeanList.get(i).getDrawableSize(),  mStepBeanList.get(i).getDrawableSize()));//默认长宽一样
+                    mImageView.setLayoutParams(new ViewGroup.LayoutParams(mStepBeanList.get(i).getDrawableSize(), mStepBeanList.get(i).getDrawableSize()));//默认长宽一样
 
                     mImageView.setBackgroundResource(mStepBeanList.get(i).getStateDrawable());
 
@@ -204,6 +209,10 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
             }
         }
 
+    }
+
+    public void OnDrawViewCallBack(HorizontalStagesViewIndicator.OnDrawViewCallBack callback) {
+        mStepsViewIndicator.setOnDrawViewCallBack(callback);
     }
 
 }

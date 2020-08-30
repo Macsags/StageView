@@ -3,6 +3,7 @@ package com.macsags.stageview;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
@@ -44,7 +45,13 @@ public class TestHorizontalStageViewActivity extends AppCompatActivity {
                 .setStepViewUnComplectedTextColor(ContextCompat.getColor(getBaseContext(), R.color.uncompleted_text_color))//设置StepsView text未完成线的颜色
                 .setStepsViewIndicatorCompleteIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.yiwancheng))//设置StepsViewIndicator CompleteIcon
                 .setStepsViewIndicatorDefaultIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.weiwancheng))//设置StepsViewIndicator DefaultIcon
-                .setStepsViewIndicatorAttentionIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.jinxingzhong));//设置StepsViewIndicator AttentionIcon
-
+                .setStepsViewIndicatorAttentionIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.jinxingzhong));
+        stageView.OnDrawViewCallBack(new HorizontalStagesViewIndicator.OnDrawViewCallBack() {
+            @Override
+            public void onViewCallBack(int index) {
+                Toast.makeText(TestHorizontalStageViewActivity.this, ""+index, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 }
