@@ -7,10 +7,9 @@ public class StageBean {
 
     private String name;
 
-    public StageBean(String name, int state, int stateDrawable, int drawableSize) {
+    public StageBean(String name, int state, int drawableSize) {
         this.name = name;
         this.state = state;
-        this.stateDrawable = stateDrawable;
         this.drawableSize = drawableSize;
     }
 

@@ -3,7 +3,9 @@ package com.macsags.stageview;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+
 import com.baoyachi.stepview.R;
 
 import java.util.List;
@@ -22,11 +25,13 @@ import java.util.List;
 public class HorizontalStageView extends LinearLayout implements HorizontalStagesViewIndicator.OnDrawIndicatorListener {
     private RelativeLayout mTextContainer;
     private RelativeLayout mImgContainer;
-    private HorizontalStagesViewIndicator mStepsViewIndicator;
-    private List<StageBean> mStepBeanList;
+    private HorizontalStagesViewIndicator mStagesViewIndicator;
+    private List<StageBean> mStageBeanList;
     private int mComplectingPosition;
     private int mUnComplectedTextColor = ContextCompat.getColor(getContext(), R.color.uncompleted_text_color);//定义默认未完成文字的颜色;
     private int mComplectedTextColor = ContextCompat.getColor(getContext(), android.R.color.white);//定义默认完成文字的颜色;
+    private Drawable mUnComplectedIV ;//定义默认未完成iv背景色颜色;
+    private Drawable mComplectedIV;//定义默认完成iv背景色颜色;
     private int mTextSize = 14;//default textSize
     private TextView mTextView;
     private ImageView mImageView;
@@ -46,8 +51,8 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
 
     private void init() {
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.widget_horizontal_stagesview, this);
-        mStepsViewIndicator = (HorizontalStagesViewIndicator) rootView.findViewById(R.id.steps_indicator);
-        mStepsViewIndicator.setOnDrawListener(this);
+        mStagesViewIndicator = (HorizontalStagesViewIndicator) rootView.findViewById(R.id.stages_indicator);
+        mStagesViewIndicator.setOnDrawListener(this);
         mTextContainer = (RelativeLayout) rootView.findViewById(R.id.rl_text_container);
         mImgContainer = (RelativeLayout) rootView.findViewById(R.id.rl_img_container);
     }
@@ -55,12 +60,20 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
     /**
      * 设置显示的文字
      *
-     * @param stepsBeanList
+     * @param StagesBeanList
      * @return
      */
-    public HorizontalStageView setStepViewTexts(List<StageBean> stepsBeanList) {
-        mStepBeanList = stepsBeanList;
-        mStepsViewIndicator.setStepNum(mStepBeanList);
+    public HorizontalStageView setStageViewTexts(List<StageBean> StagesBeanList) {
+        mStageBeanList = StagesBeanList;
+        mStagesViewIndicator.setStageNum(mStageBeanList);
+        int j =-1;
+        for (int i = 0; i <StagesBeanList.size() ; i++) {
+            if( StagesBeanList.get(i).getState()==1){
+                j++;
+            }
+
+        }
+        mComplectingPosition =j;
         return this;
     }
 
@@ -71,7 +84,7 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
      * @param unComplectedTextColor
      * @return
      */
-    public HorizontalStageView setStepViewUnComplectedTextColor(int unComplectedTextColor) {
+    public HorizontalStageView setStageViewUnComplectedTextColor(int unComplectedTextColor) {
         mUnComplectedTextColor = unComplectedTextColor;
         return this;
     }
@@ -82,60 +95,80 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
      * @param complectedTextColor
      * @return
      */
-    public HorizontalStageView setStepViewComplectedTextColor(int complectedTextColor) {
+    public HorizontalStageView setStageViewComplectedTextColor(int complectedTextColor) {
         this.mComplectedTextColor = complectedTextColor;
         return this;
     }
 
     /**
-     * 设置StepsViewIndicator未完成线的颜色
+     * 设置上部未完成图片
+     *
+     * @param unComplectedIv
+     * @return
+     */
+    public HorizontalStageView setStageViewUnComplectedIv(Drawable unComplectedIv) {
+        mUnComplectedIV = unComplectedIv;
+        return this;
+    }
+    /**
+     * 设置完成图片
+     *
+     * @param complectedIv
+     * @return
+     */
+    public HorizontalStageView setStageViewComplectedIv(Drawable complectedIv) {
+        this.mComplectedIV = complectedIv;
+        return this;
+    }
+    /**
+     * 设置StagesViewIndicator未完成线的颜色
      *
      * @param unCompletedLineColor
      * @return
      */
-    public HorizontalStageView setStepsViewIndicatorUnCompletedLineColor(int unCompletedLineColor) {
-        mStepsViewIndicator.setUnCompletedLineColor(unCompletedLineColor);
+    public HorizontalStageView setStagesViewIndicatorUnCompletedLineColor(int unCompletedLineColor) {
+        mStagesViewIndicator.setUnCompletedLineColor(unCompletedLineColor);
         return this;
     }
 
     /**
-     * 设置StepsViewIndicator完成线的颜色
+     * 设置StagesViewIndicator完成线的颜色
      *
      * @param completedLineColor
      * @return
      */
-    public HorizontalStageView setStepsViewIndicatorCompletedLineColor(int completedLineColor) {
-        mStepsViewIndicator.setCompletedLineColor(completedLineColor);
+    public HorizontalStageView setStagesViewIndicatorCompletedLineColor(int completedLineColor) {
+        mStagesViewIndicator.setCompletedLineColor(completedLineColor);
         return this;
     }
 
     /**
-     * 设置StepsViewIndicator默认图片
+     * 设置StagesViewIndicator默认图片
      *
      * @param defaultIcon
      */
-    public HorizontalStageView setStepsViewIndicatorDefaultIcon(Drawable defaultIcon) {
-        mStepsViewIndicator.setDefaultIcon(defaultIcon);
+    public HorizontalStageView setStagesViewIndicatorDefaultIcon(Drawable defaultIcon) {
+        mStagesViewIndicator.setDefaultIcon(defaultIcon);
         return this;
     }
 
     /**
-     * 设置StepsViewIndicator已完成图片
+     * 设置StagesViewIndicator已完成图片
      *
      * @param completeIcon
      */
-    public HorizontalStageView setStepsViewIndicatorCompleteIcon(Drawable completeIcon) {
-        mStepsViewIndicator.setCompleteIcon(completeIcon);
+    public HorizontalStageView setStagesViewIndicatorCompleteIcon(Drawable completeIcon) {
+        mStagesViewIndicator.setCompleteIcon(completeIcon);
         return this;
     }
 
     /**
-     * 设置StepsViewIndicator正在进行中的图片
+     * 设置StagesViewIndicator正在进行中的图片
      *
      * @param attentionIcon
      */
-    public HorizontalStageView setStepsViewIndicatorAttentionIcon(Drawable attentionIcon) {
-        mStepsViewIndicator.setAttentionIcon(attentionIcon);
+    public HorizontalStageView setStagesViewIndicatorAttentionIcon(Drawable attentionIcon) {
+        mStagesViewIndicator.setAttentionIcon(attentionIcon);
         return this;
     }
 
@@ -154,22 +187,23 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
 
     @Override
     public void onDrawIndicator() {
+//        Log.e("TAG", "onDrawIndicator: " );
         if (mTextContainer != null) {
             mTextContainer.removeAllViews();
-            List<Float> complectedXPosition = mStepsViewIndicator.getCircleCenterPointPositionList();
-//            List<Float> c = mStepsViewIndicator.getc
-            if (mStepBeanList != null && complectedXPosition != null && complectedXPosition.size() > 0) {
-                for (int i = 0; i < mStepBeanList.size(); i++) {
+            List<Float> complectedXPosition = mStagesViewIndicator.getCircleCenterPointPositionList();
+//            List<Float> c = mStagesViewIndicator.getc
+            if (mStageBeanList != null && complectedXPosition != null && complectedXPosition.size() > 0) {
+                for (int i = 0; i < mStageBeanList.size(); i++) {
                     mTextView = new TextView(getContext());
                     mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTextSize);
-                    mTextView.setText(mStepBeanList.get(i).getName());
+                    mTextView.setText(mStageBeanList.get(i).getName());
                     int spec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
                     mTextView.measure(spec, spec);
                     // getMeasuredWidth
                     int measuredWidth = mTextView.getMeasuredWidth();
                     mTextView.setX(complectedXPosition.get(i) - measuredWidth / 2);
                     mTextView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+                    Log.e("TAG", "onDrawIndicator: "+mComplectingPosition+"------i"+i);
                     if (i <= mComplectingPosition) {
                         mTextView.setTypeface(null, Typeface.BOLD);
                         mTextView.setTextColor(mComplectedTextColor);
@@ -190,18 +224,30 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
         }
         if (mImgContainer != null) {
             mImgContainer.removeAllViews();
-            List<Float> complectedXPosition = mStepsViewIndicator.getCircleCenterPointPositionList();
-            if (mStepBeanList != null && complectedXPosition != null && complectedXPosition.size() > 0) {
-                for (int i = 0; i < mStepBeanList.size(); i++) {
+            List<Float> complectedXPosition = mStagesViewIndicator.getCircleCenterPointPositionList();
+            if (mStageBeanList != null && complectedXPosition != null && complectedXPosition.size() > 0) {
+                for (int i = 0; i < mStageBeanList.size(); i++) {
                     mImageView = new ImageView(getContext());
                     int spec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
                     mImageView.measure(spec, spec);
                     // getMeasuredWidth
                     int measuredWidth = mImageView.getMeasuredWidth();
-                    mImageView.setX(complectedXPosition.get(i) - mStepBeanList.get(i).getDrawableSize() / 2);
-                    mImageView.setLayoutParams(new ViewGroup.LayoutParams(mStepBeanList.get(i).getDrawableSize(), mStepBeanList.get(i).getDrawableSize()));//默认长宽一样
+                    mImageView.setX(complectedXPosition.get(i) - mStageBeanList.get(i).getDrawableSize() / 2);
+                    mImageView.setLayoutParams(new ViewGroup.LayoutParams(mStageBeanList.get(i).getDrawableSize(), mStageBeanList.get(i).getDrawableSize()));//默认长宽一样
 
-                    mImageView.setBackgroundResource(mStepBeanList.get(i).getStateDrawable());
+                    if (i <= mComplectingPosition) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            mImageView.setBackground(mComplectedIV);
+                        }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            mImageView.setBackground(mUnComplectedIV);
+                        }
+                    }
+//                    mImageView.setBackgroundResource(mStageBeanList.get(i).getStateDrawable());
+
+
+
 
                     mImgContainer.addView(mImageView);
                 }
@@ -212,7 +258,7 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
     }
 
     public void OnDrawViewCallBack(HorizontalStagesViewIndicator.OnDrawViewCallBack callback) {
-        mStepsViewIndicator.setOnDrawViewCallBack(callback);
+        mStagesViewIndicator.setOnDrawViewCallBack(callback);
     }
 
 }

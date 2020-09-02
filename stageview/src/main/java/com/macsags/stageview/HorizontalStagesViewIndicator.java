@@ -118,6 +118,7 @@ public class HorizontalStagesViewIndicator extends View {
 
     @Override
     protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        Log.e("TAG", "onMeasure: " );
         int width = defaultStepIndicatorNum * 2;
         if (MeasureSpec.UNSPECIFIED != MeasureSpec.getMode(widthMeasureSpec)) {
             screenWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -133,6 +134,7 @@ public class HorizontalStagesViewIndicator extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+//        Log.e("~~~~~~~1111~~~~~", "onSizeChanged: " );
         //获取中间的高度,目的是为了让该view绘制的线和圆在该view垂直居中   get view centerY，keep current stepview center vertical
         mCenterY = 0.5f * getHeight();
         //获取左上方Y的位置，获取该点的意义是为了方便画矩形左上的Y位置
@@ -151,9 +153,9 @@ public class HorizontalStagesViewIndicator extends View {
         /**
          * set listener
          */
-        if (mOnDrawListener != null) {
-            mOnDrawListener.onDrawIndicator();
-        }
+//        if (mOnDrawListener != null) {
+//            mOnDrawListener.onDrawIndicator();
+//        }
     }
 
     @Override
@@ -195,15 +197,19 @@ public class HorizontalStagesViewIndicator extends View {
             if (stepsBean.getState() == StageBean.STEP_UNDO) {
                 mDefaultIcon.setBounds(rect);
                 mDefaultIcon.draw(canvas);
-            } else if (stepsBean.getState() == StageBean.STEP_CURRENT) {
+//                Log.e("~~~~~~~1~~~~~", "onDraw: " + currentComplectedXPosition);
+            }
+            else if (stepsBean.getState() == StageBean.STEP_CURRENT) {
                 mCompletedPaint.setColor(Color.WHITE);
                 canvas.drawCircle(currentComplectedXPosition, mCenterY, mCircleRadius * 1.1f, mCompletedPaint);
-                Log.e("~~~~~~~~~~~~", "onDraw: " + currentComplectedXPosition);
+//                Log.e("~~~~~~~2~~~~~", "onDraw: " + currentComplectedXPosition);
                 mAttentionIcon.setBounds(rect);
                 mAttentionIcon.draw(canvas);
-            } else if (stepsBean.getState() == StageBean.STEP_COMPLETED) {
+            }
+            else if (stepsBean.getState() == StageBean.STEP_COMPLETED) {
                 mCompleteIcon.setBounds(rect);
                 mCompleteIcon.draw(canvas);
+//                Log.e("~~~~~~~3~~~~~", "onDraw: " + currentComplectedXPosition);
             }
         }
         //-----------------------画图标-----draw icon-----------------------------------------------
@@ -223,7 +229,7 @@ public class HorizontalStagesViewIndicator extends View {
      *
      * @param stepsBeanList 流程步数
      */
-    public void setStepNum(List<StageBean> stepsBeanList) {
+    public void setStageNum(List<StageBean> stepsBeanList) {
         this.mStepBeanList = stepsBeanList;
         mStepNum = mStepBeanList.size();
 
