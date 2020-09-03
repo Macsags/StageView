@@ -30,8 +30,10 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
     private int mComplectingPosition;
     private int mUnComplectedTextColor = ContextCompat.getColor(getContext(), R.color.uncompleted_text_color);//定义默认未完成文字的颜色;
     private int mComplectedTextColor = ContextCompat.getColor(getContext(), android.R.color.white);//定义默认完成文字的颜色;
-    private Drawable mUnComplectedIV ;//定义默认未完成iv背景色颜色;
-    private Drawable mComplectedIV;//定义默认完成iv背景色颜色;
+    //    private Drawable mUnComplectedIV ;//定义默认未完成iv背景色颜色;
+//    private Drawable mComplectedIV;//定义默认完成iv背景色颜色;
+    private int mUnComplectedIvs[];
+    private int mComplectedIvs[];
     private int mTextSize = 14;//default textSize
     private TextView mTextView;
     private ImageView mImageView;
@@ -66,14 +68,14 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
     public HorizontalStageView setStageViewTexts(List<StageBean> StagesBeanList) {
         mStageBeanList = StagesBeanList;
         mStagesViewIndicator.setStageNum(mStageBeanList);
-        int j =-1;
-        for (int i = 0; i <StagesBeanList.size() ; i++) {
-            if( StagesBeanList.get(i).getState()==1){
+        int j = -1;
+        for (int i = 0; i < StagesBeanList.size(); i++) {
+            if (StagesBeanList.get(i).getState() == 1) {
                 j++;
             }
 
         }
-        mComplectingPosition =j;
+        mComplectingPosition = j;
         return this;
     }
 
@@ -103,23 +105,25 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
     /**
      * 设置上部未完成图片
      *
-     * @param unComplectedIv
+     * @param unComplectedIvs
      * @return
      */
-    public HorizontalStageView setStageViewUnComplectedIv(Drawable unComplectedIv) {
-        mUnComplectedIV = unComplectedIv;
+    public HorizontalStageView setStageViewUnComplectedIv(int[] unComplectedIvs) {
+        mUnComplectedIvs = unComplectedIvs;
         return this;
     }
+
     /**
      * 设置完成图片
      *
-     * @param complectedIv
+     * @param complectedIvs
      * @return
      */
-    public HorizontalStageView setStageViewComplectedIv(Drawable complectedIv) {
-        this.mComplectedIV = complectedIv;
+    public HorizontalStageView setStageViewComplectedIv(int[] complectedIvs) {
+        this.mComplectedIvs = complectedIvs;
         return this;
     }
+
     /**
      * 设置StagesViewIndicator未完成线的颜色
      *
@@ -203,7 +207,7 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
                     int measuredWidth = mTextView.getMeasuredWidth();
                     mTextView.setX(complectedXPosition.get(i) - measuredWidth / 2);
                     mTextView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    Log.e("TAG", "onDrawIndicator: "+mComplectingPosition+"------i"+i);
+                    Log.e("TAG", "onDrawIndicator: " + mComplectingPosition + "------i" + i);
                     if (i <= mComplectingPosition) {
                         mTextView.setTypeface(null, Typeface.BOLD);
                         mTextView.setTextColor(mComplectedTextColor);
@@ -237,16 +241,14 @@ public class HorizontalStageView extends LinearLayout implements HorizontalStage
 
                     if (i <= mComplectingPosition) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mImageView.setBackground(mComplectedIV);
+                            mImageView.setBackgroundResource(mComplectedIvs[i]);
                         }
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mImageView.setBackground(mUnComplectedIV);
+                            mImageView.setBackgroundResource(mUnComplectedIvs[i]);
                         }
                     }
 //                    mImageView.setBackgroundResource(mStageBeanList.get(i).getStateDrawable());
-
-
 
 
                     mImgContainer.addView(mImageView);

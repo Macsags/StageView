@@ -1,6 +1,7 @@
 package com.macsags.stageview;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +61,8 @@ public class TestHorizontalStageViewActivity extends AppCompatActivity {
         stagesBeanList.add(stageBean5);
         stagesBeanList.add(stageBean6);
         stagesBeanList.add(stageBean7);
+        int[] drawables = new int[]{R.mipmap.shuipingzuo,R.mipmap.shuangyuzuo,R.mipmap.jinniuzuo,R.mipmap.mojiezuo,R.mipmap.tianchengzuo,R.mipmap.chunvzuo,R.mipmap.juxiezuo,R.mipmap.muyangzuo};
+        int[] drawables1 = new int[]{R.mipmap.shuipingzuo1,R.mipmap.shuangyuzuo1,R.mipmap.jinniuzuo1,R.mipmap.mojiezuo1,R.mipmap.tianchengzuo1,R.mipmap.chunvzuo1,R.mipmap.juxiezuo1,R.mipmap.muyangzuo1};
 
         stageView.setStageViewTexts(stagesBeanList)
                 .setTextSize(16)//set textSize
@@ -70,7 +73,7 @@ public class TestHorizontalStageViewActivity extends AppCompatActivity {
                 .setStagesViewIndicatorCompleteIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.yiwancheng))//设置stagesViewIndicator CompleteIcon
                 .setStagesViewIndicatorDefaultIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.weiwancheng))//设置stagesViewIndicator DefaultIcon
                 .setStagesViewIndicatorAttentionIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.jinxingzhong))
-                .setStageViewUnComplectedIv(ContextCompat.getDrawable(getBaseContext(), R.mipmap.tianchengzuo1))
-                .setStageViewComplectedIv(ContextCompat.getDrawable(getBaseContext(), R.mipmap.tianchengzuo));
+                .setStageViewUnComplectedIv(drawables)
+                .setStageViewComplectedIv(drawables1);
     }
 }
